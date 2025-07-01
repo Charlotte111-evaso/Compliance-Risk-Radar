@@ -3,12 +3,15 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 import pydeck as pdk
+import os
 
 st.set_page_config(layout="wide")
 
 @st.cache_data
 def load_data():
-    return pd.read_csv("processed_users.csv")
+    base_dir = os.path.dirname(os.path.abspath(__file__))  # Get folder where your script lives
+    csv_path = os.path.join(base_dir, "processed_users.csv")  # Build full path to CSV
+    return pd.read_csv(csv_path)
 
 df = load_data()
 

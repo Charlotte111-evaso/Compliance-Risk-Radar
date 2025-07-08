@@ -11,6 +11,17 @@ app = Flask(__name__)
 DATA_PATH = os.path.join(os.path.dirname(__file__), 'processed_users.csv')
 df = pd.read_csv(DATA_PATH)
 
+@app.route("/")
+def index():
+    return """
+    <h1>Compliance Risk Radar API</h1>
+    <p>Welcome to the backend service. Available endpoints:</p>
+    <ul>
+        <li><a href="/api/summary">/api/summary</a></li>
+        <li><a href="/api/ip-risk-plot">/api/ip-risk-plot</a></li>
+    </ul>
+    """
+
 @app.route("/api/summary")
 def get_summary():
     return jsonify({

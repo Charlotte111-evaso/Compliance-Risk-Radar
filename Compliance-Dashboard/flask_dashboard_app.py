@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, send_file
+from flask import Flask, jsonify, render_template, send_file
 import pandas as pd
 import matplotlib.pyplot as plt
 import io
@@ -12,15 +12,28 @@ DATA_PATH = os.path.join(os.path.dirname(__file__), 'processed_users.csv')
 df = pd.read_csv(DATA_PATH)
 
 @app.route("/")
-def index():
-    return """
-    <h1>Compliance Risk Radar API</h1>
-    <p>Welcome to the backend service. Available endpoints:</p>
-    <ul>
-        <li><a href="/api/summary">/api/summary</a></li>
-        <li><a href="/api/ip-risk-plot">/api/ip-risk-plot</a></li>
-    </ul>
-    """
+def home():
+    total_users = len(df)
+    anomalies_detected = int(df['is_anomaly'].sum())
+    unique_countries = int(df['country'].nunique())
+
+    fig, ax = plt.subplots()
+    df['ip_risk_score'].hist(bins=30, ax=ax)
+    ax.set_title("IP Risk Score Distribution")
+    ax.set_xlabel("IP Risk Score")
+    ax.set_ylabel("Number of Users")
+
+    buf = io.BytesIO()
+    fig.savefig(buf, format='png')
+    buf.seek(0)
+    encoded = base64.b64encode(buf.read()).decode('utf-8')
+    plt.close(fig)
+
+    return render_template("dashboard.html",
+                           total_users=total_users,
+                           anomalies_detected=anomalies_detected,
+                           unique_countries=unique_countries,
+                           plot_image=encoded)
 
 @app.route("/api/summary")
 def get_summary():

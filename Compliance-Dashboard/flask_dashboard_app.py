@@ -70,8 +70,7 @@ fig3 = px.scatter_geo(
 )
 plot_geo_html = fig3.to_html(full_html=False, include_plotlyjs='cdn')
 
-# Filtered anomalies and full raw data
-anomaly_df = df[df['is_anomaly'] == True]
+# Full raw data
 raw_df = df.copy()
 
 @app.route("/")
@@ -84,13 +83,8 @@ def dashboard():
         plot_ip_risk=plot_ip_risk,
         plot_tx_scatter=plot_tx_scatter,
         plot_geo_html=plot_geo_html,
-        anomaly_df=anomaly_df,
         raw_df=raw_df,
     )
 
-#if __name__ == "__main__":
-   # app.run(debug=True)
-    
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=False)
-

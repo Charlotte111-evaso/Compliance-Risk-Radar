@@ -45,28 +45,6 @@
     </div>
 
     <div class="section">
-        <h2>🚨 Anomalies</h2>
-        <table>
-            <thead>
-                <tr>
-                    {% for col in anomaly_df.columns %}
-                    <th>{{ col }}</th>
-                    {% endfor %}
-                </tr>
-            </thead>
-            <tbody>
-                {% for _, row in anomaly_df.iterrows() %}
-                <tr>
-                    {% for item in row %}
-                    <td>{{ item }}</td>
-                    {% endfor %}
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-
-    <div class="section">
         <h2>🗃️ Raw Data</h2>
         <table>
             <thead>
@@ -88,3 +66,4 @@
         </table>
     </div>
 </body>
+</html>
